@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain: ipc } = require('electron')
-const NT = require('wpilib-nt-client')
+const wpilibNT = require('wpilib-nt-client')
 const meow = require('meow')
 
 const Spike = require('spike-core')
@@ -10,13 +10,6 @@ const htmlStandards = require('reshape-standard')
 const preactPreset = require('babel-preset-preact')
 const sugarss = require('sugarss')
 const sugarml = require('sugarml')
-
-const nt = new NT.Client()
-
-nt.start((isConnected, err) => {
-  // Displays the error and the state of connection
-  console.log({ isConnected, err })
-}, 'localhost')
 
 const spikeConfig = {
   root: __dirname,
@@ -30,7 +23,8 @@ const spikeConfig = {
     minify: true,
     warnForDuplicates: false
   }),
-  reshape: htmlStandards({ parser: sugarml, locals: {}, minify: true })
+  reshape: htmlStandards({ parser: sugarml, locals: {}, minify: true }),
+  target: 'electron'
 }
 
 const spike = new Spike(spikeConfig)
@@ -55,6 +49,25 @@ if (!production) {
 }
 
 let win
+
+class NT {
+  constructor() {
+    this.data = {}
+    this.nt = new wpilibNT.Client()
+    this.nt.start((isConnected, err) => {
+      // Displays the error and the state of connection
+      console.log({ isConnected, err })
+    }, 'localhost')
+    this.nt.addListener((key, value) => {
+      console.log(key, value)
+      this.data[key] = value
+      win.webContents.send('value', key, value)
+      win.webContents.send('all', this.data)
+    })
+  }
+}
+
+const nt = new NT()
 
 const createWindow = () => {
   win = new BrowserWindow({
