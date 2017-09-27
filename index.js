@@ -12,7 +12,12 @@ const Mode = subscribeNT(({ mode = '' }) => <h1>{`Mode: ${mode}`}</h1>, {
 })
 
 const Selected = subscribeNT(
-  ({ selected = '' }) => <h1>{`Selected: ${selected}`}</h1>,
+  ({ selected = '', setSelected }) => (
+    <div class="mode">
+      <h1>{`Selected: ${selected}`}</h1>
+      <button onClick={() => setSelected('foo')}>Change Selected</button>
+    </div>
+  ),
   {
     selected: '/SmartDashboard/Autonomous Mode/selected'
   }

@@ -58,6 +58,10 @@ class NT {
       // Displays the error and the state of connection
       console.log({ isConnected, err })
     }, 'localhost')
+    ipc.on('value', (e, key, value) => {
+      this.data[key] = value
+      this.nt.Assign(value, key)
+    })
     this.nt.addListener((key, value) => {
       console.log(key, value)
       this.data[key] = value
