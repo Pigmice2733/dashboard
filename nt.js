@@ -1,7 +1,5 @@
-import { ipcRenderer } from 'electron'
+import { ipcRenderer as ipc } from 'electron'
 import { Component } from 'preact'
-
-const ipc = ipcRenderer
 
 const updateKey = key => value => {
   ipc.send('value', key, value)

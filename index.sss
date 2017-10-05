@@ -1,2 +1,19 @@
+@import "components/sidebar/index.sss"
+@import "components/connection/index.sss"
+
+:root
+  --pigmice-purple: #5f185f
+  --pigmice-dark-purple: color(var(--pigmice-purple) lightness(-4%))
+
 body
-  background-color: #5f185f
+  background-color: var(--pigmice-purple)
+  color: white
+  font-family: sans-serif
+  margin: 0
+
+h1, h2, h3, h4
+  margin: 0
+
+#p-home
+  display: flex
+  height: 100vh
