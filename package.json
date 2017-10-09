@@ -1,8 +1,7 @@
 {
   "name": "FRCDashboard",
   "version": "v2.0.0",
-  "description":
-    "Dashboard for extra robot controls in FRC. Experimental Electron environment.",
+  "description": "Dashboard for extra robot controls in FRC. Experimental Electron environment.",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
@@ -53,14 +52,26 @@
     "productName": "FRCDashboard"
   },
   "lint-staged": {
-    "**/*.js": ["npm run format", "git add"]
+    "**/*.js": [
+      "npm run format",
+      "git add"
+    ]
   },
   "eslintConfig": {
-    "extends": ["standard", "prettier", "standard-preact"],
+    "extends": [
+      "standard",
+      "prettier",
+      "standard-preact"
+    ],
     "plugins": [],
     "env": {}
   },
-  "eslintIgnore": ["node_modules", "coverage", "dist", "public"],
+  "eslintIgnore": [
+    "node_modules",
+    "coverage",
+    "dist",
+    "public"
+  ],
   "prettier": {
     "semi": false,
     "singleQuote": true

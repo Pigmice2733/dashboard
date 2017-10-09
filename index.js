@@ -1,34 +1,11 @@
 import { h, render } from 'preact'
-import subscribeNT from './nt'
-
-const KeysListRaw = ({ keys = [] }) => (
-  <ul>{keys.map(key => <li key={key}>{key}</li>)}</ul>
-)
-
-const KeysList = subscribeNT(KeysListRaw, { keys: 'keys' })
-
-const Mode = subscribeNT(({ mode = '' }) => <h1>{`Mode: ${mode}`}</h1>, {
-  mode: '/robot/mode'
-})
-
-const Selected = subscribeNT(
-  ({ selected = '', setSelected }) => (
-    <div class="mode">
-      <h1>{`Selected: ${selected}`}</h1>
-      <button onClick={() => setSelected('foo')}>Change Selected</button>
-    </div>
-  ),
-  {
-    selected: '/SmartDashboard/Autonomous Mode/selected'
-  }
-)
+import Connection from './components/connection'
+import Sidebar from './components/sidebar'
 
 const Home = () => (
   <div id="p-home">
     <h1>Home</h1>
-    <Selected />
-    <Mode />
-    <KeysList />
+    <Sidebar />
   </div>
 )
 

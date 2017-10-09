@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain: ipc } = require('electron')
 const wpilibNT = require('wpilib-nt-client')
 const meow = require('meow')
+const { connect } = require('net')
 
 const Spike = require('spike-core')
 
@@ -27,6 +28,8 @@ const spikeConfig = {
   target: 'electron'
 }
 
+const port = 1735
+
 const spike = new Spike(spikeConfig)
 
 spike.on('error', err => console.error(`error: ${err}`))
@@ -50,24 +53,46 @@ if (!production) {
 
 let win
 
+const padNumber = number => {
+  const { length } = number.toString()
+  return '0'.repeat(4 - length) + number
+}
+
 class NT {
   constructor() {
-    this.data = {}
-    this.nt = new wpilibNT.Client()
-    this.nt.start((isConnected, err) => {
-      // Displays the error and the state of connection
-      console.log({ isConnected, err })
-    }, 'localhost')
+    this.startNt()
+    this.ip = 'localhost'
+    ipc.on('selectip', (_, ip) => {
+      this.ip = ip
+      this.nt.removeListener(this.listener)
+      delete this.nt
+      win.webContents.send('connectionstatus', false)
+      this.startNt(ip)
+    })
+    ipc.on('connectionstatus', () => {
+      console.log('connectionstatus', this.nt.isConnected())
+      win.webContents.send('connectionstatus', this.nt.isConnected())
+    })
     ipc.on('value', (e, key, value) => {
       this.data[key] = value
       this.nt.Assign(value, key)
     })
-    this.nt.addListener((key, value) => {
-      console.log(key, value)
+    this.listener = this.nt.addListener((key, value) => {
       this.data[key] = value
       win.webContents.send('value', key, value)
       win.webContents.send('all', this.data)
     })
+  }
+  startNt(ip = 'localhost') {
+    this.ip = ip
+    this.data = {}
+    this.nt = new wpilibNT.Client()
+    this.connected = false
+    this.nt.start((isConnected, err) => {
+      // Displays the error and the state of connection
+      console.log({ isConnected, err })
+      win.webContents.send('connectionstatus', isConnected)
+    }, ip)
   }
 }
 
