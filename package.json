@@ -53,14 +53,26 @@
     "files": ["public/**/*", "main.js"]
   },
   "lint-staged": {
-    "**/*.js": ["npm run format", "git add"]
+    "**/*.js": [
+      "npm run format",
+      "git add"
+    ]
   },
   "eslintConfig": {
-    "extends": ["standard", "prettier", "standard-preact"],
+    "extends": [
+      "standard",
+      "prettier",
+      "standard-preact"
+    ],
     "plugins": [],
     "env": {}
   },
-  "eslintIgnore": ["node_modules", "coverage", "dist", "public"],
+  "eslintIgnore": [
+    "node_modules",
+    "coverage",
+    "dist",
+    "public"
+  ],
   "prettier": {
     "semi": false,
     "singleQuote": true
