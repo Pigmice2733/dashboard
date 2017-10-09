@@ -1,50 +1,10 @@
 const { app, BrowserWindow, ipcMain: ipc } = require('electron')
 const wpilibNT = require('wpilib-nt-client')
-const meow = require('meow')
 
-const Spike = require('spike-core')
+const dev = require('electron-is-dev')
 
-const jsStandards = require('spike-js-standards')
-const cssStandards = require('spike-css-standards')
-const htmlStandards = require('reshape-standard')
-const preactPreset = require('babel-preset-preact')
-const sugarss = require('sugarss')
-const sugarml = require('sugarml')
-
-const spikeConfig = {
-  root: __dirname,
-  matchers: { html: '*(**/)*.sgr', css: '*(**/)*.sss' },
-  ignore: ['components/*/*.sss'],
-  entry: { index: './index' },
-  server: { open: false },
-  babel: jsStandards({ appendPresets: preactPreset }),
-  postcss: cssStandards({
-    parser: sugarss,
-    minify: true,
-    warnForDuplicates: false
-  }),
-  reshape: htmlStandards({ parser: sugarml, locals: {}, minify: true }),
-  target: 'electron'
-}
-
-const spike = new Spike(spikeConfig)
-
-spike.on('error', err => console.error(`error: ${err}`))
-spike.on('warning', warn => console.log(`warning: ${warn}`))
-spike.on('compile', () => console.log('compiled'))
-spike.once('compile', () => {
-  // wait to reload, because server isn't started right away
-  setTimeout(() => (win.reload ? win.reload() : ''), 500)
-})
-
-const cli = meow(`
-  Usage
-    $ ./main.js
-`)
-
-const { production } = cli.flags
-
-if (!production) {
+if (dev) {
+  const spike = require('./spike')
   spike.watch()
 }
 
@@ -78,12 +38,15 @@ const createWindow = () => {
     width: 1366,
     height: 570
   })
-  if (!production) {
+  if (dev) {
     win.webContents.openDevTools()
   }
+  // don't show menus
   win.setMenu(null)
   console.log('load')
-  win.loadURL('http://localhost:1111')
+  win.loadURL(
+    dev ? 'http://localhost:1111' : `file:///${__dirname}/public/index.html`
+  )
   // top left
   win.setPosition(0, 0)
 }
