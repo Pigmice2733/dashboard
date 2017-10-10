@@ -1,10 +1,13 @@
 import { h, render } from 'preact'
 import Connection from './components/connection'
 import Sidebar from './components/sidebar'
+import Camera from './components/camera'
+import RobotDiagrams from './components/robot-diagrams'
 
 const Home = () => (
   <div id="p-home">
-    <h1>Home</h1>
+    <Camera />
+    <RobotDiagrams />
     <Sidebar />
   </div>
 )
