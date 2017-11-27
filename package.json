@@ -38,7 +38,7 @@
     "babel-preset-preact": "^1.1.0",
     "eslint-config-standard-preact": "^1.1.6",
     "meow": "^3.7.0",
-    "preact": "^8.2.5",
+    "preact": "^8.2.6",
     "reshape-standard": "^3.1.1",
     "spike-core": "^2.2.0",
     "spike-css-standards": "^3.0.0",
