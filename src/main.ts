@@ -15,6 +15,8 @@ const createMainWindow = () => {
     window.webContents.openDevTools()
   }
 
+  window.setMenu(null)
+
   window.loadURL(url)
 
   window.on('closed', () => {

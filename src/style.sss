@@ -1,3 +1,18 @@
-body
+*, *::before, *::after
+  box-sizing: border-box
+
+body, html
   background: #282828
   color: white
+  height: 100%
+  margin: 0
+  font-family: "Roboto Mono", monospace
+
+.g-main
+  display: grid
+  grid-template-columns: auto 1fr auto
+  height: 100%
+
+h1, h2
+  margin: 0
+  font-weight: normal
