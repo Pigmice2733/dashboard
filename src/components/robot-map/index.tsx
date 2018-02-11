@@ -25,7 +25,7 @@ const RobotMap = ({
       class="robot"
       style={{
         transform: `
-translate(${x - 1}em, ${54 - y - 1.5}em)
+translate(${x - 0.4572}em, ${16.4592 - y - 0.51181}em)
 rotate(${-angle}rad)`
       }}
     />
