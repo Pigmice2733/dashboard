@@ -22,6 +22,17 @@ class PanelSelector extends Component<PanelProps, PanelState> {
     this.state = { selectedPanel: null }
   }
 
+  shouldComponentUpdate(newProps: PanelProps, newState: PanelState) {
+    const oldPanels = this.props.panels
+    const newPanels = newProps.panels
+    return (
+      oldPanels.length !== newPanels.length ||
+      !oldPanels.every((p, i) => p.icon === newPanels[i].icon) ||
+      !oldPanels.every((p, i) => p.name === newPanels[i].name) ||
+      newState.selectedPanel !== this.state.selectedPanel
+    )
+  }
+
   selectPanel = (clickedPanel: number) => () =>
     this.setState(({ selectedPanel }: PanelState) => ({
       selectedPanel: selectedPanel === clickedPanel ? null : clickedPanel

@@ -8,12 +8,15 @@ const addresses = [
   { name: 'WiFi/Ethernet', address: '10.27.33.10', key: 'wifi' }
 ]
 
-const ConnectionPanel = () => (
-  <ListSelect
-    onChange={k => connect(addresses.find(a => a.key === k).address)}
-    options={addresses}
-    render={val => <h1>{val.name}</h1>}
-  />
-)
+const ConnectionPanel = () => {
+  console.log('render connection panel')
+  return (
+    <ListSelect
+      onChange={k => connect(addresses.find(a => a.key === k).address)}
+      options={addresses}
+      render={val => <h1>{val.name}</h1>}
+    />
+  )
+}
 
 export default ConnectionPanel

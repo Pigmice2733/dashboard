@@ -56,10 +56,8 @@ class Main extends Component<{}, MainState> {
           this.setState({ x }),
         '/path_tracking/robot_state/position/y': (y: number) =>
           this.setState({ y }),
-        '/path_tracking/path': (p: any) => {
-          console.log(p.map(JSON.parse))
-          this.setState({ path: p.map(JSON.parse) })
-        },
+        '/path_tracking/path': (p: any) =>
+          this.setState({ path: p.map(JSON.parse) }),
         '/path_tracking/path_state/goal_point/x': (goalPointX: number) =>
           this.setState({ goalPointX }),
         '/path_tracking/path_state/goal_point/y': (goalPointY: number) =>

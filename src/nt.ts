@@ -10,6 +10,9 @@ export const connect = (address: string) =>
       (con, err) => {
         console.log(con ? 'connected' : 'disconnected', address)
         resolve(con)
+        if (!con) {
+          connect(address)
+        }
       },
       address,
       1735
