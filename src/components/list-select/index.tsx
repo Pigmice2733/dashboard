@@ -1,6 +1,5 @@
 import { h, Component } from 'preact'
 import './style'
-import { deepCompare } from '../../utils'
 
 type ListSelectProps<T> = {
   onChange: (selected: string) => any

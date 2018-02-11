@@ -9,7 +9,7 @@ const createMainWindow = () => {
 
   const url = development
     ? `http://localhost:3000`
-    : `file://${__dirname}/index.html`
+    : `file://${process.cwd()}/build/index.html`
 
   if (development) {
     window.webContents.openDevTools()
