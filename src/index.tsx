@@ -4,21 +4,9 @@ import PanelSelector from './components/panel-selector'
 import ConnectionPanel from './components/connection-panel'
 import Camera from './components/camera'
 import './style'
+import client, { connect } from './nt'
 
-import { Client as ntClient } from 'wpilib-nt-client'
-
-const client = new ntClient()
-
-const connect = (address: string) =>
-  new Promise<boolean>(resolve => {
-    client.start(
-      (con, err) => {
-        resolve(con)
-      },
-      address,
-      1735
-    )
-  })
+let currentAddress: string
 
 type NTValue = string | number | boolean
 
@@ -27,6 +15,7 @@ interface HandleOptions {
 }
 
 const handle = (options: HandleOptions) => (key: string, value: NTValue) => {
+  // console.log(key, value)
   options[key] && options[key](value)
 }
 
@@ -34,12 +23,14 @@ interface MainState {
   angle: number
   x: number
   y: number
-  connected: boolean
-  address: string
   path: number[][]
   pathPositionX: number
   pathPositionY: number
+  goalPointX: number
+  goalPointY: number
 }
+
+const setValue = (key: string, value: string) => client.Assign(value, key)
 
 class Main extends Component<{}, MainState> {
   constructor() {
@@ -50,24 +41,13 @@ class Main extends Component<{}, MainState> {
       y: 0,
       pathPositionX: 0,
       pathPositionY: 0,
-      connected: false,
       path: [],
-      address: '10.27.33.10'
-      // address: '10.151.34.85'
+      goalPointX: 0,
+      goalPointY: 0
     }
   }
 
-  setupNT = () => {
-    setInterval(async () => {
-      this.setState({ connected: client.isConnected() })
-      if (!this.state.connected) {
-        connect(this.state.address)
-      }
-    }, 200)
-  }
-
   componentWillMount() {
-    this.setupNT()
     client.addListener(
       handle({
         '/path_tracking/robot_state/rotation': (a: number) =>
@@ -76,8 +56,14 @@ class Main extends Component<{}, MainState> {
           this.setState({ x }),
         '/path_tracking/robot_state/position/y': (y: number) =>
           this.setState({ y }),
-        '/path_tracking/path': (p: any) =>
-          this.setState({ path: JSON.parse(p) }),
+        '/path_tracking/path': (p: any) => {
+          console.log(p.map(JSON.parse))
+          this.setState({ path: p.map(JSON.parse) })
+        },
+        '/path_tracking/path_state/goal_point/x': (goalPointX: number) =>
+          this.setState({ goalPointX }),
+        '/path_tracking/path_state/goal_point/y': (goalPointY: number) =>
+          this.setState({ goalPointY }),
         '/path_tracking/path_state/path_position/x': (pathPositionX: number) =>
           this.setState({ pathPositionX }),
         '/path_tracking/path_state/path_position/y': (pathPositionY: number) =>
@@ -88,7 +74,16 @@ class Main extends Component<{}, MainState> {
 
   render(
     _: {},
-    { x, y, angle, path, pathPositionX, pathPositionY }: MainState
+    {
+      x,
+      y,
+      angle,
+      path,
+      pathPositionX,
+      pathPositionY,
+      goalPointX,
+      goalPointY
+    }: MainState
   ) {
     return (
       <div class="g-main">
@@ -98,6 +93,7 @@ class Main extends Component<{}, MainState> {
           y={y}
           angle={angle}
           path={path}
+          goalPoint={[goalPointX, goalPointY]}
           pathPositionX={pathPositionX}
           pathPositionY={pathPositionY}
         />

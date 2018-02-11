@@ -12,11 +12,11 @@
   "dependencies": {
     "preact": "^8.2.7",
     "webpack-config-calebeby": "^1.1.0",
-    "wpilib-nt-client": "^1.4.2"
+    "wpilib-nt-client": "^1.6.0"
   },
   "devDependencies": {
-    "electron": "1.7.11",
-    "electron-builder": "^19.55.2"
+    "electron": "1.8.2",
+    "electron-builder": "^19.56.0"
   },
   "prettier": {
     "semi": false,
