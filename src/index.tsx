@@ -2,6 +2,7 @@ import { render, h, Component } from 'preact'
 import RobotMap from './components/robot-map'
 import PanelSelector from './components/panel-selector'
 import ConnectionPanel from './components/connection-panel'
+import AutonomousPanel from './components/autonomous-panel'
 import Camera from './components/camera'
 import './style'
 import client, { connect } from './nt'
@@ -15,7 +16,7 @@ interface HandleOptions {
 }
 
 const handle = (options: HandleOptions) => (key: string, value: NTValue) => {
-  // console.log(key, value)
+  console.log(key, value)
   options[key] && options[key](value)
 }
 
@@ -28,6 +29,8 @@ interface MainState {
   pathPositionY: number
   goalPointX: number
   goalPointY: number
+  autoModes: string[]
+  startingPositions: string[]
 }
 
 const setValue = (key: string, value: string) => client.Assign(value, key)
@@ -43,7 +46,9 @@ class Main extends Component<{}, MainState> {
       pathPositionY: 0,
       path: [],
       goalPointX: 0,
-      goalPointY: 0
+      goalPointY: 0,
+      autoModes: [],
+      startingPositions: []
     }
   }
 
@@ -65,7 +70,11 @@ class Main extends Component<{}, MainState> {
         '/path_tracking/path_state/path_position/x': (pathPositionX: number) =>
           this.setState({ pathPositionX }),
         '/path_tracking/path_state/path_position/y': (pathPositionY: number) =>
-          this.setState({ pathPositionY })
+          this.setState({ pathPositionY }),
+        '/SmartDashboard/Autonomous Mode/options': (autoModes: string[]) =>
+          this.setState({ autoModes }),
+        '/path_selection/initial_states': (startingPositions: string) =>
+          this.setState({ startingPositions: JSON.parse(startingPositions) })
       })
     )
   }
@@ -80,7 +89,9 @@ class Main extends Component<{}, MainState> {
       pathPositionX,
       pathPositionY,
       goalPointX,
-      goalPointY
+      goalPointY,
+      autoModes,
+      startingPositions
     }: MainState
   ) {
     return (
@@ -104,7 +115,12 @@ class Main extends Component<{}, MainState> {
             },
             {
               name: 'Autonomous',
-              contents: () => <h1>Autonomous Panel</h1>,
+              contents: () => (
+                <AutonomousPanel
+                  autoModes={autoModes}
+                  startingPositions={startingPositions}
+                />
+              ),
               icon: 'auto'
             }
           ]}
