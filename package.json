@@ -11,12 +11,12 @@
   "dependencies": {
     "cross-env": "^5.1.3",
     "preact": "^8.2.7",
-    "webpack-config-calebeby": "^1.2.0",
-    "wpilib-nt-client": "^1.6.0"
+    "webpack-config-calebeby": "^2.2.0",
+    "wpilib-nt-client": "^1.7.1"
   },
   "devDependencies": {
     "electron": "1.8.2",
-    "electron-builder": "^19.56.0"
+    "electron-builder": "^20.0.8"
   },
   "prettier": {
     "semi": false,
