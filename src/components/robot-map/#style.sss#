@@ -1,0 +1,18 @@
+.g-robot-map
+  font-size: 10px
+  width: 27em
+  height: 54em
+  background: blue
+  position: relative
+
+  & .robot
+    background: green
+    width: 2em
+    height: 3em
+    transform-origin: 50% 50%
+
+  & .point
+    background: red
+    width: 1px
+    height: 2px
+    position: absolute

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "jsx": "react",
+    "jsxFactory": "h",
+    "lib": ["ESNext", "DOM"],
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true
+  },
+  "files": ["./src/index.tsx", "./src/main.ts"]
+}

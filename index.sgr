@@ -1,7 +1,0 @@
-doctype html
-html
-  head
-    title Pigmice Dashboard
-    link(rel="stylesheet" href="/index.css")
-    script(async src="/index.js")
-  body

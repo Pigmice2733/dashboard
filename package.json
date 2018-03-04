@@ -1,77 +1,23 @@
 {
-  "name": "FRCDashboard",
-  "version": "v2.0.0",
-  "description": "Dashboard for extra robot controls in FRC. Experimental Electron environment.",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron main.js",
-    "eslint": "eslint --format=node_modules/eslint-formatter-pretty .",
-    "lint": "npm run -s format && npm run -s eslint",
-    "pretest": "npm run lint",
-    "format": "prettier --write '**/*.js' '**/*.json'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/FRCDashboard/FRCDashboard"
-  },
-  "author": "Caleb Eby",
+  "name": "electron-webpack-quick-start",
+  "version": "0.0.0",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/FRCDashboard/FRCDashboard/issues"
-  },
-  "homepage": "http://frcdashboard.github.io",
-  "devDependencies": {
-    "electron": "^1.7.9",
-    "electron-builder": "^19.27.7",
-    "eslint": "^4.7.1",
-    "eslint-config-prettier": "^2.5.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-formatter-pretty": "^1.3.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "lint-staged": "^4.2.1",
-    "prettier": "^1.7.0"
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "webpack-config-calebeby start --electron",
+    "build": "webpack-config-calebeby build --electron",
+    "dist": "cross-env NODE_ENV=production electron build/main.js"
   },
   "dependencies": {
-    "babel-preset-preact": "^1.1.0",
-    "eslint-config-standard-preact": "^1.1.6",
-    "meow": "^3.7.0",
-    "preact": "^8.2.6",
-    "reshape-standard": "^3.1.1",
-    "spike-core": "^2.2.0",
-    "spike-css-standards": "^3.0.0",
-    "spike-js-standards": "^2.0.2",
-    "sugarml": "^0.6.0",
-    "sugarss": "^1.0.0",
-    "wpilib-nt-client": "^1.1.3"
+    "cross-env": "^5.1.3",
+    "preact": "^8.2.7",
+    "webpack-config-calebeby": "^2.2.0",
+    "wpilib-nt-client": "^1.7.1"
   },
-  "build": {
-    "appId": "FRCDashboard",
-    "productName": "FRCDashboard"
+  "devDependencies": {
+    "electron": "1.8.2",
+    "electron-builder": "^20.0.8"
   },
-  "lint-staged": {
-    "**/*.js": [
-      "npm run format",
-      "git add"
-    ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "standard",
-      "prettier",
-      "standard-preact"
-    ],
-    "plugins": [],
-    "env": {}
-  },
-  "eslintIgnore": [
-    "node_modules",
-    "coverage",
-    "dist",
-    "public"
-  ],
   "prettier": {
     "semi": false,
     "singleQuote": true
