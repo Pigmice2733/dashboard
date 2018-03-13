@@ -1,15 +1,19 @@
 import { render, h, Component } from 'preact'
+
+import RobotDiagram from './components/robot-diagram'
 import RobotMap from './components/robot-map'
 import PanelSelector from './components/panel-selector'
 import ConnectionPanel from './components/connection-panel'
 import AutonomousPanel from './components/autonomous-panel'
 import Camera from './components/camera'
+
 import './style'
 
 const Main = () => (
   <div class="g-main">
     <Camera />
     <RobotMap />
+    <RobotDiagram />
     <PanelSelector
       panels={[
         {

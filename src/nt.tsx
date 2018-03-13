@@ -10,6 +10,7 @@ let connected = false
 
 export const connect = (address: string) => {
   if (connected && robotAddress === address) {
+    console.log(client.getKeys())
     return
   }
   robotAddress = address
@@ -47,47 +48,45 @@ interface NTState {
   [key: string]: any
 }
 
-export const NT = <T extends {}>(props: NTProps<T>) => {
-  class InnerNT extends Component<{}, NTState> {
-    listener: Listener
+export class NT<T extends {}> extends Component<NTProps<T>, NTState> {
+  listener: Listener
 
-    constructor() {
-      super()
-      this.state = Object.keys(props.data).reduce<NTState>(
-        (acc, val) => ((acc[val] = undefined), acc),
-        {}
-      )
-    }
-
-    componentWillMount() {
-      this.listener = client.addListener((ntKey, ntValue) => {
-        console.log(ntKey, ntValue)
-        const propsKey = Object.keys(props.data).find(k => {
-          const d = props.data[k]
-          return (typeof d === 'string' ? d : d.key) === ntKey
-        })
-        if (propsKey === undefined) {
-          return
-        }
-        const d = props.data[propsKey]
-        if (typeof d !== 'string') {
-          ntValue = d.transform(ntValue)
-        }
-        if (propsKey !== undefined) {
-          this.setState((state: NTState) => (state[propsKey] = ntValue))
-        }
-      }, true)
-    }
-
-    componentWillUnmount() {
-      client.removeListener(this.listener)
-    }
-
-    render() {
-      return props.render(this.state as T)
-    }
+  constructor(props: NTProps<T>) {
+    super()
+    this.state = Object.keys(props.data).reduce<NTState>(
+      (acc, val) => ((acc[val] = undefined), acc),
+      {}
+    )
   }
-  return <InnerNT />
+
+  componentWillMount() {
+    const props = this.props
+    this.listener = client.addListener((ntKey, ntValue) => {
+      console.log(ntKey, ntValue)
+      const propsKey = Object.keys(props.data).find(k => {
+        const d = props.data[k]
+        return (typeof d === 'string' ? d : d.key) === ntKey
+      })
+      if (propsKey === undefined) {
+        return
+      }
+      const d = props.data[propsKey]
+      if (typeof d !== 'string') {
+        ntValue = d.transform(ntValue)
+      }
+      if (propsKey !== undefined) {
+        this.setState((state: NTState) => (state[propsKey] = ntValue))
+      }
+    }, true)
+  }
+
+  componentWillUnmount() {
+    client.removeListener(this.listener)
+  }
+
+  render(props: NTProps<T>) {
+    return props.render(this.state as T)
+  }
 }
 
 export default client
