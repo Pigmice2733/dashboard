@@ -11,7 +11,7 @@ interface ConnectionOption {
 const addresses: ConnectionOption[] = [
   { name: 'Simulator', address: 'localhost', key: 'sim' },
   { name: 'USB', address: '172.22.11.2', key: 'usb' },
-  { name: 'WiFi/Ethernet', address: '10.27.33.10', key: 'wifi' }
+  { name: 'WiFi/Ethernet', address: '10.27.33.2', key: 'wifi' }
 ]
 
 const connectToMatching = (k: string) => {

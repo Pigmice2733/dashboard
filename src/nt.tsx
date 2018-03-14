@@ -13,20 +13,17 @@ export const connect = (address: string) => {
     console.log(client.getKeys())
     return
   }
+  console.log(address)
   robotAddress = address
   new Promise<boolean>(resolve => {
-    client.start(
-      (con, err) => {
-        console.log(con ? 'connected' : 'disconnected', address)
-        connected = con
-        resolve(con)
-        if (!con) {
-          connect(robotAddress)
-        }
-      },
-      robotAddress,
-      1735
-    )
+    client.start((con, err) => {
+      console.log(con ? 'connected' : 'disconnected', address)
+      connected = con
+      resolve(con)
+      if (!con) {
+        connect(robotAddress)
+      }
+    }, robotAddress)
   })
 }
 

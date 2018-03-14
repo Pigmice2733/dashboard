@@ -16,10 +16,10 @@ interface MapProps {
 const RobotMap = () => (
   <NT
     data={{
-      robotX: '/path_tracking/robot_state/position/x',
-      robotY: '/path_tracking/robot_state/position/y',
+      robotX: '/components/drivetrain/position/x',
+      robotY: '/components/drivetrain/position/y',
       robotAngle: {
-        key: '/path_tracking/robot_state/rotation',
+        key: '/components/drivetrain/rotation',
         transform: (a: number) => a - Math.PI / 2
       },
       path: {
@@ -38,44 +38,49 @@ const RobotMap = () => (
       pathPositionY,
       goalPointX,
       goalPointY
-    }: MapProps) => (
-      <div class="g-robot-map">
-        <div
-          class="robot"
-          style={{
-            transform: `
+    }: MapProps) => {
+      console.log(`
+translate(${robotX - 0.4572}em, ${16.4592 - robotY - 0.51181}em)
+rotate(${-robotAngle}rad)`)
+      return (
+        <div class="g-robot-map">
+          <div
+            class="robot"
+            style={{
+              transform: `
 translate(${robotX - 0.4572}em, ${16.4592 - robotY - 0.51181}em)
 rotate(${-robotAngle}rad)`
-          }}
-        />
-        {(path === undefined ? [] : path).map((p, i) => (
+            }}
+          />
+          {(path === undefined ? [] : path).map((p, i) => (
+            <div
+              class="point"
+              style={{
+                left: `${p[0]}em`,
+                bottom: `${p[1]}em`,
+                background: i === path.length - 1 ? 'red' : null
+              }}
+            />
+          ))}
           <div
             class="point"
             style={{
-              left: `${p[0]}em`,
-              bottom: `${p[1]}em`,
-              background: i === path.length - 1 ? 'red' : null
+              left: `${pathPositionX}em`,
+              bottom: `${pathPositionY}em`,
+              background: 'purple'
             }}
           />
-        ))}
-        <div
-          class="point"
-          style={{
-            left: `${pathPositionX}em`,
-            bottom: `${pathPositionY}em`,
-            background: 'purple'
-          }}
-        />
-        <div
-          class="point"
-          style={{
-            left: `${goalPointX}em`,
-            bottom: `${goalPointY}em`,
-            background: 'yellow'
-          }}
-        />
-      </div>
-    )}
+          <div
+            class="point"
+            style={{
+              left: `${goalPointX}em`,
+              bottom: `${goalPointY}em`,
+              background: 'yellow'
+            }}
+          />
+        </div>
+      )
+    }}
   />
 )
 
